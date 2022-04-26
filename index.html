@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- tailwind css -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Course Duration Calculator</title>
+  </head>
+  <body class="bg-slate-300">
+    <div class="container mx-auto">
+      <h1 class="text-center text-rose-900 uppercase text-2xl font-bold mt-5">
+        This page will calculate the course duration in Days, Hours and Minutes.
+      </h1>
+
+      <section class="mt-5">
+        <form class="w-2/4 mx-auto">
+          <label for="" class="block w-2/3 p-2 mx-auto">
+            <span class="block text-sm font-medium text-slate-700"
+              >Duration of course in hours</span
+            >
+            <input
+              type="number"
+              step="any"
+              name="courseDuration"
+              id="courseDuration"
+              class="peer w-2/3 p-2 mt-1 border border-slate-400 rounded-md text-sm text-slate-800 placeholder-slate-400 focus:outline-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+              placeholder="55.00"
+            />
+            <p
+              class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm"
+            >
+              Please enter a number
+            </p>
+          </label>
+
+          <label for="" class="block w-2/3 p-2 mx-auto">
+            <span class="block text-sm font-medium text-slate-700"
+              >Duration of your daily practice in hours</span
+            >
+            <input
+              type="number"
+              step="any"
+              name="practiceDuration"
+              id="practiceDuration"
+              class="peer w-2/3 p-2 mt-1 border border-slate-400 rounded-md text-sm text-slate-800 placeholder-slate-400 focus:outline-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+              placeholder="55.00"
+            />
+            <p
+              class="mt-2 invisible peer-invalid:visible text-pink-600 text-sm"
+            >
+              Please enter a number
+            </p>
+          </label>
+          <button
+            type="submit"
+            class="rounded my-1 border border-rose-900 w-2/3 block mx-auto uppercase font-semibold text-lg p-2 text-rose-500 hover:text-rose-900"
+            id="submit"
+          >
+            calculate
+          </button>
+        </form>
+      </section>
+
+      <section class="mt-5 text-center">
+        <h3 class="uppercase text-rose-900 text-2xl font-bold mt-5">
+          Your result is here
+        </h3>
+        <p class="text-xl" id="result">your cousre result</p>
+      </section>
+    </div>
+
+    <script>
+      const result = document.getElementById("result");
+      const submit = document.getElementById("submit");
+      const courseDurationInHours = document.getElementById("courseDuration");
+      const practiceInHours = document.getElementById("practiceDuration");
+      let courseDurationInMinutes = 0;
+      let practiceInMinutes = 0;
+      let days = 0;
+      let hours = 0;
+      let minutes = 0;
+      let calculatedValue = ``;
+
+      submit.addEventListener("click", (e) => {
+        e.preventDefault();
+        // validating the inputs
+        if (
+          courseDurationInHours.value === "" ||
+          practiceInHours.value === "" ||
+          courseDurationInHours.valueAsNumber === 0 ||
+          practiceInHours.valueAsNumber === 0
+        ) {
+          // reseting the values
+          courseDurationInHours.value = "";
+          practiceInHours.value = "";
+          result.classList.remove("text-green-900");
+          result.classList.add("text-rose-900");
+          return (result.innerText = "Please enter a valid number");
+        }
+        calculate(e);
+      });
+
+      // calculate logic
+      const calculate = (e) => {
+        courseDurationInMinutes = courseDurationInHours.valueAsNumber * 60;
+        practiceInMinutes = practiceInHours.valueAsNumber * 60;
+        // while loop for counting the days
+        while (courseDurationInMinutes >= practiceInMinutes) {
+          courseDurationInMinutes -= practiceInMinutes;
+          days++;
+        }
+        // while loop for counting the hours
+        while (courseDurationInMinutes >= 60) {
+          courseDurationInMinutes -= 60;
+          hours++;
+        }
+        result.classList.remove("text-rose-900");
+        result.classList.add("text-green-900");
+        result.innerText = `Your course will be completed in ${days} - Days, ${hours} - Hours and ${minutes} - Minutes.`;
+        // reseting the values
+        courseDurationInHours.value = "";
+        practiceInHours.value = "";
+        days = 0;
+        hours = 0;
+        minutes = 0;
+      };
+    </script>
+  </body>
+</html>
